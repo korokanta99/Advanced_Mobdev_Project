@@ -46,7 +46,7 @@ const SpotifyLogin: React.FC = () => {
         {/* Log In Button */}
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={() => router.push("/home")} // ✅ Step 3 navigation
+          onPress={() => router.push("/(tabs)/playlist")} // ✅ Step 3 navigation
         >
           <Text style={styles.loginButtonText}>Log In</Text>
         </TouchableOpacity>

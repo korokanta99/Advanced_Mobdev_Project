@@ -1,28 +1,26 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+
 import {
-  FlatList,
   Image,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
-type Playlist = {
-  id: string;
-  title: string;
-  cover: any;
-};
-
-const playlists: Playlist[] = [
+const playlists = [
   {
     id: "1",
-    title: "Chill Vibes",
+    title: "Daily Mix 1",
     cover: require("@/assets/images/playlist1.png"),
   },
   {
     id: "2",
-    title: "Workout Hits",
+    title: "Chill Vibes",
     cover: require("@/assets/images/playlist2.png"),
   },
   {
@@ -32,61 +30,190 @@ const playlists: Playlist[] = [
   },
 ];
 
-const PlaylistScreen: React.FC = () => {
+export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Your Playlists</Text>
-
-      <FlatList
-        data={playlists}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContainer}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.playlistCard}>
-            <Image source={item.cover} style={styles.coverImage} />
-            <Text style={styles.title}>{item.title}</Text>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        {/* Header Row with Profile Button */}
+        <View style={styles.headerRow}>
+          <TouchableOpacity style={styles.profileButton}>
+            <Ionicons name="person-circle-outline" size={40} color="#fff" />
           </TouchableOpacity>
-        )}
-      />
+        </View>
+
+        {/* Search Bar */}
+        <TextInput
+          style={styles.searchBar}
+          placeholder="What do you want to listen to?"
+          placeholderTextColor="#aaa"
+        />
+
+        {/* Playlists Section */}
+        <Text style={styles.sectionTitle}>Made For You</Text>
+        <View style={styles.playlistRow}>
+          {playlists.map((playlist) => (
+            <TouchableOpacity key={playlist.id} style={styles.playlistCard}>
+              <Image source={playlist.cover} style={styles.coverImage} />
+              <Text style={styles.playlistTitle}>{playlist.title}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Bigger Music Player */}
+        <Text style={styles.sectionTitle}>Now Playing</Text>
+        <View style={styles.bigPlayer}>
+          <Image
+            source={require("@/assets/images/music.png")}
+            style={styles.bigCover}
+          />
+          <Text style={styles.songTitle}>Don't Stop Me Now</Text>
+          <Text style={styles.songArtist}>Queen</Text>
+
+          {/* Progress bar */}
+          <View style={styles.progressBar}>
+            <View style={styles.progressFill} />
+          </View>
+          <View style={styles.timeRow}>
+            <Text style={styles.timeText}>1:32</Text>
+            <Text style={styles.timeText}>3:20</Text>
+          </View>
+
+          {/* Player controls */}
+          <View style={styles.controls}>
+            <TouchableOpacity>
+              <Ionicons name="shuffle" size={24} color="#aaa" />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Ionicons name="play-skip-back" size={36} color="#fff" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.playButton}>
+              <Ionicons name="pause-circle" size={64} color="#1DB954" />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Ionicons name="play-skip-forward" size={36} color="#fff" />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Ionicons name="repeat" size={24} color="#aaa" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
-};
-
-export default PlaylistScreen;
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000",
+  },
+  scrollContainer: {
     padding: 16,
-  },
-  header: {
-    fontSize: 26,
-    fontWeight: "bold",
-    color: "#fff",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  listContainer: {
     paddingBottom: 40,
   },
-  playlistCard: {
+  headerRow: {
     flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#121212",
-    borderRadius: 12,
-    padding: 12,
+    justifyContent: "flex-end",
     marginBottom: 16,
   },
-  coverImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 8,
-    marginRight: 16,
+  profileButton: {
+    padding: 4,
   },
-  title: {
+  searchBar: {
+    backgroundColor: "#121212",
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    color: "#fff",
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "#333",
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 12,
+  },
+  playlistRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 24,
+  },
+  playlistCard: {
+    width: "30%",
+    alignItems: "center",
+  },
+  coverImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  playlistTitle: {
+    color: "#fff",
+    fontSize: 14,
+    textAlign: "center",
+  },
+  bigPlayer: {
+    backgroundColor: "#181818",
+    borderRadius: 16,
+    padding: 20,
+    alignItems: "center",
+    marginTop: 12,
+    borderWidth: 1,
+    borderColor: "#333",
+  },
+  bigCover: {
+    width: 120,
+    height: 120,
+    borderRadius: 8,
+    marginBottom: 12,
+  },
+  songTitle: {
     color: "#fff",
     fontSize: 18,
     fontWeight: "600",
+    textAlign: "center",
+  },
+  songArtist: {
+    color: "#aaa",
+    fontSize: 14,
+    marginBottom: 12,
+    textAlign: "center",
+  },
+  progressBar: {
+    width: "100%",
+    height: 4,
+    backgroundColor: "#333",
+    borderRadius: 2,
+    marginBottom: 4,
+  },
+  progressFill: {
+    width: "40%",
+    height: "100%",
+    backgroundColor: "#1DB954",
+    borderRadius: 2,
+  },
+  timeRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginBottom: 16,
+  },
+  timeText: {
+    color: "#aaa",
+    fontSize: 12,
+  },
+  controls: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "90%",
+    marginTop: 8,
+  },
+  playButton: {
+    marginHorizontal: 12,
   },
 });

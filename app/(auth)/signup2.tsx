@@ -122,7 +122,7 @@ const SpotifyLogin: React.FC = () => {
         {/* Sign Up Button */}
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={() => router.push("../auth/login")}>
+          onPress={() => router.push("../(auth)/login")}>
             
           <Text style={styles.loginButtonText}>Sign Up</Text>
         </TouchableOpacity>
@@ -137,7 +137,7 @@ const SpotifyLogin: React.FC = () => {
         {/* Sign In Link */}
         <View style={styles.signupContainer}>
           <Text style={styles.signupText}>Already have an Account?</Text>
-          <TouchableOpacity onPress={() => router.push("../auth/login")}>
+          <TouchableOpacity onPress={() => router.push("../(auth)/login")}>
             <Text style={styles.signupLink}> Login here</Text>
           </TouchableOpacity>
         </View>

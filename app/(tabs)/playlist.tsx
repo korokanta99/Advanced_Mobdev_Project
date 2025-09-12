@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React from "react";
-
 import {
   Image,
   SafeAreaView,
@@ -30,13 +30,18 @@ const playlists = [
   },
 ];
 
-export default function HomeScreen() {
+export default function PlaylistScreen() {
+  const router = useRouter();
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Header Row with Profile Button */}
         <View style={styles.headerRow}>
-          <TouchableOpacity style={styles.profileButton}>
+          <TouchableOpacity
+            style={styles.profileButton}
+            onPress={() => router.push("/(tabs)/ProfileDrawer")} // ✅ go to drawer
+          >
             <Ionicons name="person-circle-outline" size={40} color="#fff" />
           </TouchableOpacity>
         </View>

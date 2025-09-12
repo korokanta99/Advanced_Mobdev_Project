@@ -14,14 +14,12 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
+        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
-          ios: {
-            position: 'absolute',
-          },
+          ios: { position: 'absolute' },
           default: {},
         }),
       }}
@@ -31,7 +29,7 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <IconSymbol size={26} name="house.fill" color={color} />
           ),
         }}
       />
@@ -40,7 +38,7 @@ export default function TabLayout() {
         options={{
           title: 'Playlists',
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="music.note.list" color={color} />
+            <IconSymbol size={26} name="music.note.list" color={color} />
           ),
         }}
       />
@@ -49,7 +47,7 @@ export default function TabLayout() {
         options={{
           title: 'Settings',
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="gearshape.fill" color={color} />
+            <IconSymbol size={26} name="gearshape.fill" color={color} />
           ),
         }}
       />

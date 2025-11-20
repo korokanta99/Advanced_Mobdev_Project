@@ -117,3 +117,16 @@ Build Dynamic Profile Preview
 
 
 
+Week 5
+
+Create a Redux store for light/dark mode using Redux Toolkit.
+
+  <img width="353" height="620" alt="image" src="https://github.com/user-attachments/assets/acfdcbe8-7f26-4fe9-b64b-4bbaa5dd32b7" />
+
+
+Presist Theme
+
+<img width="357" height="641" alt="image" src="https://github.com/user-attachments/assets/a0c9db5b-3412-4696-967e-4c2c33b6a3f3" />
+
+
+

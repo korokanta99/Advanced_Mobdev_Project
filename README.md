@@ -61,8 +61,59 @@ Week 1
 Week 2
 
 <img width="384" height="831" alt="image" src="https://github.com/user-attachments/assets/8a7cb810-27e4-4571-ab62-ef0dc96367e5" />
-
-
 <img width="364" height="805" alt="image" src="https://github.com/user-attachments/assets/68263343-a9f7-4241-a64e-918157c5e941" />
+
+
+
+Week 3
+
+Implement Gestures
+
+<img width="371" height="808" alt="image" src="https://github.com/user-attachments/assets/f29bfbe7-db3a-4c86-8992-e7a4de85263f" />
+
+
+Add Custom Transitions
+<img width="378" height="743" alt="image" src="https://github.com/user-attachments/assets/e14b8801-9207-4ac2-be39-49ad99f06b72" />
+
+
+
+Testing on android Emulator
+<img width="1473" height="983" alt="image" src="https://github.com/user-attachments/assets/49ed6df9-6931-4d16-a2a0-e57f8f8579a6" />
+
+
+
+
+
+Week 4
+
+ Build Playlist Interface
+
+ <img width="279" height="587" alt="image" src="https://github.com/user-attachments/assets/81c8a249-35e7-4056-88e8-724ae49548fc" />
+
+
+ Add animation
+
+ <img width="288" height="597" alt="image" src="https://github.com/user-attachments/assets/e2d0f181-b855-4d20-b236-b1141ab6a5c6" />
+
+
+
+Implement Undo/Redo
+
+<img width="293" height="570" alt="image" src="https://github.com/user-attachments/assets/e986b4c5-7ad6-4408-bb20-d478cbd0643d" />
+
+
+Add persistent state
+<img width="293" height="578" alt="image" src="https://github.com/user-attachments/assets/73169de3-bcf5-4ef3-8106-3b87db396fe9" />
+
+
+Build Profile Form with Enhanced Validation
+
+<img width="306" height="643" alt="image" src="https://github.com/user-attachments/assets/4c5ef73c-8e19-4819-a85a-159d7622357e" />
+
+
+Build Dynamic Profile Preview
+<img width="291" height="552" alt="image" src="https://github.com/user-attachments/assets/192a0bef-2183-445e-ab87-bf8dbe939032" />
+
+
 
 

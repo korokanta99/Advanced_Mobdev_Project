@@ -19,6 +19,9 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { toggleTheme } from "../store/themeSlice";
+import { darkTheme, lightTheme } from "../theme";
 
 const Drawer = createDrawerNavigator();
 
@@ -87,6 +90,9 @@ const ProfilePreview = memo(({
 });
 
 function ProfileScreen() {
+  const themeMode = useAppSelector((state) => state.theme.mode);
+  const theme = themeMode === 'dark' ? darkTheme : lightTheme;
+
   const user = {
     name: "Hi",
     email: "senshi@gmail.com",
@@ -94,13 +100,13 @@ function ProfileScreen() {
   };
 
   return (
-    <SafeAreaView style={profileStyles.container}>
-      <Image source={user.avatar} style={profileStyles.avatar} />
-      <Text style={profileStyles.name}>{user.name}</Text>
-      <Text style={profileStyles.email}>{user.email}</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.background, alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+      <Image source={user.avatar} style={{ width: 120, height: 120, borderRadius: 60, marginBottom: 20 }} />
+      <Text style={{ color: theme.text, fontSize: 24, fontWeight: 'bold', marginBottom: 4 }}>{user.name}</Text>
+      <Text style={{ color: theme.textSecondary, fontSize: 16, marginBottom: 24 }}>{user.email}</Text>
 
-      <TouchableOpacity style={profileStyles.editButton}>
-        <Text style={profileStyles.editButtonText}>Edit Profile</Text>
+      <TouchableOpacity style={{ backgroundColor: theme.primary, paddingVertical: 12, paddingHorizontal: 24, borderRadius: 30, marginTop: 8 }}>
+        <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Edit Profile</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -108,68 +114,80 @@ function ProfileScreen() {
 
 function EditProfileScreen() {
   const router = useRouter();
+  const themeMode = useAppSelector((state) => state.theme.mode);
+  const theme = themeMode === 'dark' ? darkTheme : lightTheme;
+
   const [name, setName] = useState('Senshi');
   const [email, setEmail] = useState('senshi@gmail.com');
   const [genre, setGenre] = useState('');
 
-  // Check if preview should be visible (any field has content)
   const shouldShowPreview = Boolean(name || email || genre);
 
+  const getGenreImage = (genre: string) => {
+    if (!genre) return 'https://via.placeholder.com/80?text=Profile';
+    return `https://via.placeholder.com/80?text=${encodeURIComponent(genre)}`;
+  };
+
   return (
-    <SafeAreaView style={profileStyles.container}>
-      <Text style={profileStyles.editHeader}>Edit Profile</Text>
-      <Image source={require('@/assets/images/senshi.png')} style={profileStyles.avatar} />
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.background, padding: 24 }}>
+      <Text style={{ color: theme.text, fontSize: 22, fontWeight: '700', marginBottom: 16 }}>Edit Profile</Text>
+      <Image source={require('@/assets/images/senshi.png')} style={{ width: 120, height: 120, borderRadius: 60, marginBottom: 20 }} />
 
       <TextInput
         value={name}
         onChangeText={setName}
         placeholder="Name"
-        placeholderTextColor="#888"
-        style={profileStyles.input}
+        placeholderTextColor={theme.placeholder}
+        style={{ width: '100%', backgroundColor: theme.card, color: theme.text, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 8, marginBottom: 12, borderWidth: 1, borderColor: theme.border }}
       />
 
       <TextInput
         value={email}
         onChangeText={setEmail}
         placeholder="Email"
-        placeholderTextColor="#888"
+        placeholderTextColor={theme.placeholder}
         keyboardType="email-address"
-        style={profileStyles.input}
+        style={{ width: '100%', backgroundColor: theme.card, color: theme.text, paddingHorizontal: 12, paddingVertical: 10, borderRadius: 8, marginBottom: 12, borderWidth: 1, borderColor: theme.border }}
       />
 
-      {/* Genre Selection */}
-      <Text style={profileStyles.label}>Favorite Music Genre</Text>
-      <View style={profileStyles.pickerContainer}>
+      <Text style={{ color: theme.text, fontSize: 16, fontWeight: '600', marginBottom: 8, alignSelf: 'flex-start' }}>Favorite Music Genre</Text>
+      <View style={{ width: '100%', backgroundColor: theme.card, borderRadius: 8, borderWidth: 1, borderColor: theme.border, marginBottom: 16 }}>
         <Picker
           selectedValue={genre}
-          style={profileStyles.picker}
+          style={{ color: theme.text, height: 50, width: '100%' }}
           onValueChange={(value) => setGenre(value)}
-          dropdownIconColor="#1DB954"
+          dropdownIconColor={theme.primary}
         >
           {GENRES.map((genreOption) => (
             <Picker.Item
               key={genreOption.value}
               label={genreOption.label}
               value={genreOption.value}
-              color="#fff"
+              color={theme.text}
             />
           ))}
         </Picker>
       </View>
 
-      {/* Dynamic Profile Preview */}
-      <ProfilePreview 
-        name={name}
-        email={email}
-        genre={genre}
-        isVisible={shouldShowPreview}
-      />
+      {shouldShowPreview && (
+        <Animated.View style={{ backgroundColor: theme.card, borderRadius: 12, padding: 16, borderWidth: 1, borderColor: theme.primary, marginVertical: 16, width: '100%' }}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', color: theme.primary, marginBottom: 12, textAlign: 'center' }}>Live Profile Preview</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image source={{ uri: getGenreImage(genre) }} style={{ width: 60, height: 60, borderRadius: 30, marginRight: 12 }} />
+            <View style={{ flex: 1 }}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', color: theme.text, marginBottom: 4 }}>{name || 'Your Name'}</Text>
+              <Text style={{ fontSize: 12, color: theme.textSecondary, marginBottom: 4 }}>{email || 'your@email.com'}</Text>
+              <Text style={{ fontSize: 12, color: theme.primary, fontStyle: 'italic' }}>{genre ? `♪ ${genre} Lover` : '♪ Music Lover'}</Text>
+            </View>
+          </View>
+        </Animated.View>
+      )}
 
       <TouchableOpacity
-        style={profileStyles.editButton}
+        style={{ backgroundColor: theme.primary, paddingVertical: 12, paddingHorizontal: 24, borderRadius: 30, alignItems: 'center' }}
         onPress={() => router.back()}
       >
-        <Text style={profileStyles.editButtonText}>Save Changes</Text>
+        <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Save Changes</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -177,32 +195,36 @@ function EditProfileScreen() {
 
 function SettingsScreen() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const mode = useAppSelector((state) => state.theme.mode);
+  const theme = mode === "dark" ? darkTheme : lightTheme;
+
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [darkModeEnabled, setDarkModeEnabled] = useState(false);
 
   return (
-    <SafeAreaView style={settingsStyles.container}>
-      <Text style={settingsStyles.header}>Settings</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.background, padding: 24 }}>
+      <Text style={{ color: theme.text, fontSize: 26, fontWeight: 'bold', marginBottom: 32, textAlign: 'center' }}>
+        Settings
+      </Text>
 
       {/* Profile Section */}
       <TouchableOpacity
-        style={settingsStyles.profileButton}
+        style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: theme.card, borderRadius: 12, padding: 16, marginBottom: 24 }}
         onPress={() => router.push('/(tabs)/ComponentShowcase')}
       >
-        <View style={settingsStyles.profileContent}>
-          <Image source={require('@/assets/images/senshi.png')} style={settingsStyles.profileImage} />
-          <View style={settingsStyles.profileInfo}>
-            <Text style={settingsStyles.profileName}>Senshi</Text>
-          </View>
-          <View style={settingsStyles.chevronContainer}>
-            <Text style={settingsStyles.chevron}>›</Text>
-          </View>
+        <Image
+          source={require('@/assets/images/senshi.png')}
+          style={{ width: 60, height: 60, borderRadius: 30, marginRight: 16 }}
+        />
+        <View style={{ flex: 1 }}>
+          <Text style={{ color: theme.text, fontSize: 18, fontWeight: 'bold' }}>Senshi</Text>
         </View>
+        <Text style={{ color: theme.text, fontSize: 24 }}>›</Text>
       </TouchableOpacity>
 
       {/* Notifications Toggle */}
-      <View style={settingsStyles.settingRow}>
-        <Text style={settingsStyles.settingText}>Notifications</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: theme.card, padding: 16, borderRadius: 12, marginBottom: 16 }}>
+        <Text style={{ color: theme.text, fontSize: 16 }}>Notifications</Text>
         <Switch
           value={notificationsEnabled}
           onValueChange={setNotificationsEnabled}
@@ -212,11 +234,11 @@ function SettingsScreen() {
       </View>
 
       {/* Dark Mode Toggle */}
-      <View style={settingsStyles.settingRow}>
-        <Text style={settingsStyles.settingText}>Dark Mode</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: theme.card, padding: 16, borderRadius: 12, marginBottom: 16 }}>
+        <Text style={{ color: theme.text, fontSize: 16 }}>Dark Mode</Text>
         <Switch
-          value={darkModeEnabled}
-          onValueChange={setDarkModeEnabled}
+          value={mode === 'dark'}
+          onValueChange={() => dispatch(toggleTheme())}
           trackColor={{ false: '#555', true: '#1DB954' }}
           thumbColor="#fff"
         />
@@ -224,21 +246,22 @@ function SettingsScreen() {
 
       {/* Logout Button */}
       <TouchableOpacity
-        style={settingsStyles.logoutButton}
+        style={{ backgroundColor: '#E53935', paddingVertical: 16, borderRadius: 30, alignItems: 'center', marginTop: 40 }}
         onPress={() => router.replace('/(auth)/login')}
       >
-        <Text style={settingsStyles.logoutText}>Log Out</Text>
+        <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Log Out</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 }
+
 
 export default function ProfileDrawer() {
   return (
     <Drawer.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: '#000' },
-        headerTintColor: '#fff',
+        headerTintColor: 'rgba(255, 255, 255, 1)',
         drawerStyle: { backgroundColor: '#121212' },
         drawerActiveTintColor: '#1DB954',
         drawerInactiveTintColor: '#fff',
